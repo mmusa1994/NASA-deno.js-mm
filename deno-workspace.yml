@@ -1,0 +1,12 @@
+scripts:
+  # "denox run start" will execute mod.ts with ./models networking permissions
+  start:
+    file: src/mod.ts
+    deno_options:
+      allow-net: [ api.spacexdata.com, 0.0.0.0:8000 ]
+      allow-read: data/kepler_exoplanets_nasa.csv
+  lock:
+    file: src/mod.ts
+    deno_options:
+      lock: lock.json
+      lock-write: true
