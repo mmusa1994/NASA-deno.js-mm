@@ -4,7 +4,7 @@
 
 Prerequisites: Deno (>=1.0.0)
 
-``$ deno install -Af -n denox https://denopkg.com/BentoumiTech/denox/denox.ts``
+``deno install -Af -n denox https://denopkg.com/BentoumiTech/denox/denox.ts``
 
 - after that 
 
