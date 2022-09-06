@@ -6,6 +6,6 @@ Prerequisites: Deno (>=1.0.0)
 
 ``deno install -Af -n denox https://denopkg.com/BentoumiTech/denox/denox.ts``
 
-- after that 
+- after that just run
 
 `` denox run start``    
