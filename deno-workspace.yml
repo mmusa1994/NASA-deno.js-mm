@@ -4,7 +4,7 @@ scripts:
     file: src/mod.ts
     deno_options:
       allow-net: [ api.spacexdata.com, 0.0.0.0:8000 ]
-      allow-read: data/kepler_exoplanets_nasa.csv
+      allow-read: true
   lock:
     file: src/mod.ts
     deno_options:
