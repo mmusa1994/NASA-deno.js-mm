@@ -1,6 +1,7 @@
 import { Application, log, send } from "./deps.ts";
 
 import api from "./api.ts";
+import { db } from "../db/db.ts";
 
 const app = new Application();
 const PORT = 8000;
@@ -61,6 +62,8 @@ app.use(async (ctx) => {
     });
   }
 });
+
+await db.sync({ drop: false });
 
 if (import.meta.main) {
   log.info(`Server running on port ${PORT}...`);

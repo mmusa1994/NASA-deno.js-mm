@@ -1,7 +1,19 @@
-import { BufReader, join, log, parse, pick } from "../src/deps.ts";
+import { BufReader, join, parse, pick } from "../src/deps.ts";
+import { Database, PostgresConnector } from "../src/deps.ts";
+import { PlanetModel } from "../src/modules/planets/planet.model.ts";
+
+const connection = new PostgresConnector({
+  host: "localhost",
+  username: "root",
+  password: "root",
+  database: "deno",
+});
+
+export const db = new Database(connection);
+
+db.link([PlanetModel]);
 
 type Planet = Record<string, string>;
-let planets: Array<Planet>;
 
 async function loadPlanetData() {
   const path = join("data", "kepler_exoplanets_nasa.csv");
@@ -31,7 +43,7 @@ async function loadPlanetData() {
   });
 }
 
-export function filterHabitablePlanets(planets: Array<Planet>) {
+function filterHabitablePlanets(planets: Array<Planet>) {
   return planets.filter((planet) => {
     const planetaryRadius = Number(planet["koi_prad"]);
     const stellarRadius = Number(planet["koi_srad"]);
@@ -49,15 +61,6 @@ export function filterHabitablePlanets(planets: Array<Planet>) {
   });
 }
 
-planets = await loadPlanetData();
-for (const planet of planets) {
-  log.info(planet);
-}
+const planets = await loadPlanetData();
 
-planets = await loadPlanetData();
-
-log.info(`${planets.length} habitable planets found!`);
-
-export function getAllPlanets() {
-  return planets;
-}
+await PlanetModel.create(planets);

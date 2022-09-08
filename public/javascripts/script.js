@@ -31,7 +31,7 @@ function loadPlanets() {
       const planetSelector = document.getElementById("planets-selector");
       planets.forEach((planet) => {
         planetSelector.innerHTML +=
-          `<option value="${planet.kepler_name}">${planet.kepler_name}</option>`;
+          `<option value="${planet.id}">${planet.kepler_name}</option>`;
       });
     });
 }
@@ -45,7 +45,7 @@ function abortLaunch(id) {
 }
 
 function submitLaunch() {
-  const target = document.getElementById("planets-selector").value;
+  const planetmodel_id = document.getElementById("planets-selector").value;
   const launchDate = new Date(document.getElementById("launch-day").value);
   const mission = document.getElementById("mission-name").value;
   const rocket = document.getElementById("rocket-name").value;
@@ -57,11 +57,12 @@ function submitLaunch() {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      launchDate: Math.floor(launchDate / 1000),
+      launchDate,
       flightNumber,
       mission,
       rocket,
-      target,
+      planetmodel_id,
+      upcoming: true
     }),
   })
     .then(() => {
@@ -74,24 +75,33 @@ function listUpcoming() {
   const upcomingList = document.getElementById("upcoming-list");
   upcomingList.innerHTML =
     `<div class="list-heading">${numberHeading} ${dateHeading} ${missionHeading} ${rocketHeading} ${targetHeading}</div>`;
-  launches
+  
+    launches
+    .filter((launch) => launch.upcoming)
+    launches
     .filter((launch) => launch.upcoming)
     .forEach((launch) => {
-      const launchDate = new Date(launch.launchDate * 1000).toDateString();
-      const flightNumber = String(launch.flightNumber).padEnd(3);
-      const mission = launch.mission.slice(0, 25).padEnd(25);
-      const rocket = launch.rocket.padEnd(22);
-      const target = launch.target ?? "";
-      upcomingList.innerHTML +=
-        `<div class="list-item"><a class="delete" onclick="abortLaunch(${launch.flightNumber})">✖</a> ${flightNumber} <span class="silver">${launchDate}</span> ${mission} <span class="silver">${rocket}</span> <span class="gold">${target}</span></div>`;
+      if(launch.planetmodelId) {
+        fetch(`/planets/${launch.planetmodelId}`).then((planet) => planet.json()).then((fetchedPlanet) => {
+          launch.planet = fetchedPlanet;
+          const launchDate = new Date(launch.launchDate).toDateString();
+          const id = String(launch.id).padEnd(3);
+          const mission = launch.mission.slice(0, 25).padEnd(25);
+          const rocket = launch.rocket.padEnd(22);
+          const planet = launch.planet ? launch.planet.kepler_name : "";
+
+          upcomingList.innerHTML +=
+            `<div class="list-item"><a class="delete" onclick="abortLaunch(${launch.id})">✖</a> ${id} <span class="silver">${launchDate}</span> ${mission} <span class="silver">${rocket}</span> <span class="gold">${planet}</span></div>`;
+            })
+        }
     });
 }
 
 function listHistory() {
   const historyList = document.getElementById("history-list");
   historyList.innerHTML =
-    `<div class="list-heading">${numberHeading} ${dateHeading} ${missionHeading} ${rocketHeading} ${customersHeading}</div>`;
-  launches
+    `<div class="list-heading">${numberHeading} ${dateHeading} ${missionHeading} ${rocketHeading}</div>`;
+    launches
     .filter((launch) => !launch.upcoming)
     .forEach((launch) => {
       const success = launch.success
@@ -101,9 +111,8 @@ function listHistory() {
       const flightNumber = String(launch.flightNumber).padEnd(3);
       const mission = launch.mission.slice(0, 25).padEnd(25);
       const rocket = launch.rocket.padEnd(22);
-      const customers = launch.customers.join(", ").slice(0, 27);
       historyList.innerHTML +=
-        `<div class="list-item">${success} ${flightNumber} <span class="silver">${launchDate}</span> ${mission} <span class="silver">${rocket}</span> ${customers}</div>`;
+        `<div class="list-item">${success} ${flightNumber} <span class="silver">${launchDate}</span> ${mission} <span class="silver">${rocket}</span></div>`;
     });
 }
 

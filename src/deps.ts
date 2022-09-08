@@ -12,4 +12,12 @@ export {
   send,
 } from "https://deno.land/x/oak@v11.1.0/mod.ts";
 
+export {
+  Database,
+  Model,
+  DataTypes,
+  PostgresConnector,
+  Relationships,
+} from "https://deno.land/x/denodb@v1.0.39/mod.ts";
+
 export { flatMap, pick } from "https://deno.land/x/lodash@4.17.15-es/lodash.js";
