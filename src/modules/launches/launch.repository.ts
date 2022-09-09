@@ -13,6 +13,10 @@ class LaunchRepository {
   async delete(id: number): Promise<Model | Model[]> {
     return await LaunchModel.deleteById(id);
   }
+
+  async update(id: number): Promise<Model | Model[]> {
+    return await LaunchModel.where("id", id).update({ upcoming: false });
+  }
 }
 
 export default new LaunchRepository();

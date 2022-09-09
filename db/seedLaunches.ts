@@ -4,7 +4,7 @@ import { LaunchModel } from "../src/modules/launches/launch.model.ts";
 
 const connection = new PostgresConnector({
   host: "localhost",
-  username: "root",
+  username: "postgres",
   password: "root",
   database: "deno",
 });

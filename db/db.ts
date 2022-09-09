@@ -4,13 +4,13 @@ import { PlanetModel } from "../src/modules/planets/planet.model.ts";
 
 const connection = new PostgresConnector({
   host: "localhost",
-  username: "root",
+  username: "postgres",
   password: "root",
   database: "deno",
 });
 
 export const db = new Database(connection);
 
-//Relationships.belongsTo(LaunchModel, PlanetModel);
+// Relationships.belongsTo(LaunchModel, PlanetModel);
 
 db.link([PlanetModel, LaunchModel]);

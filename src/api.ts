@@ -25,7 +25,7 @@ router.get("/planets", async (ctx) => {
 router.get("/planets/:id", async (ctx) => {
   if (ctx.params?.id) {
     const launchesList = await planetRepository.getById(
-      parseInt(ctx.params.id)
+      parseInt(ctx.params.id),
     ); //launches.getOne(Number(ctx.params.id));
     ctx.response.body = launchesList ?? ctx.throw(400, "Launch doesn't exist");
   }
@@ -50,7 +50,8 @@ router.post("/launches", async (ctx) => {
 
 router.delete("/launches/:id", async (ctx) => {
   if (ctx.params?.id) {
-    const result = await launchRepository.delete(parseInt(ctx.params.id)); //launches.removeOne(Number(ctx.params.id));
+    // const result = await launchRepository.delete(parseInt(ctx.params.id)); //launches.removeOne(Number(ctx.params.id));
+    const result = await launchRepository.update(parseInt(ctx.params.id));
     ctx.response.body = { success: result };
   }
 });

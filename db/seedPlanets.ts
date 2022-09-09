@@ -4,7 +4,7 @@ import { PlanetModel } from "../src/modules/planets/planet.model.ts";
 
 const connection = new PostgresConnector({
   host: "localhost",
-  username: "root",
+  username: "postgres",
   password: "root",
   database: "deno",
 });
