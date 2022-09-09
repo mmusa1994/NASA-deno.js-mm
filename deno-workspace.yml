@@ -3,8 +3,24 @@ scripts:
   start:
     file: src/mod.ts
     deno_options:
-      allow-net: [ api.spacexdata.com, 0.0.0.0:8000 ]
+      allow-net:
+        [api.spacexdata.com, 0.0.0.0:8000, 127.0.0.1:5432, localhost:5432]
       allow-read: true
+      allow-env: true
+  seedLaunches:
+    file: db/seedLaunches.ts
+    deno_options:
+      allow-net:
+        [api.spacexdata.com, 0.0.0.0:8000, 127.0.0.1:5432, localhost:5432]
+      allow-read: true
+      allow-env: true
+  seedPlanets:
+    file: db/seedPlanets.ts
+    deno_options:
+      allow-net:
+        [api.spacexdata.com, 0.0.0.0:8000, 127.0.0.1:5432, localhost:5432]
+      allow-read: true
+      allow-env: true
   lock:
     file: src/mod.ts
     deno_options:
