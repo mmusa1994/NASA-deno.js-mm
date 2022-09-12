@@ -71,6 +71,6 @@ export function removeOne(id: number) {
 export function addOne(data: Launch) {
   launches.set(
     data.flightNumber,
-    { ...data, upcoming: true, customers: ["AnkoraINC", "NASA"] },
+    { ...data, upcoming: true, customers: ["Ankora", "NASA"] },
   );
 }
